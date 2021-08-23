@@ -1,6 +1,7 @@
 const util = require('util');
 const fs = require('fs');
 
+//creates unique user ids
 const uuidv1 = require('uuid/v1');
 
 const readFileAsync = util.promisify(fs.readFile);
@@ -14,7 +15,7 @@ class Store {
   write(note) {
     return writeFileAsync('db/db.json', JSON.stringify(note));
   }
-
+  //main function, gets our notes and creates an array
   getNotes() {
     return this.read().then((notes) => {
       let parsedNotes;
@@ -28,7 +29,7 @@ class Store {
       return parsedNotes;
     });
   }
-
+  // creates objects to stick inside the previously created array
   addNote(note) {
     const { title, text } = note;
 
@@ -39,12 +40,14 @@ class Store {
     const newNote = { title, text, id: uuidv1() };
 
     return this.getNotes()
+    //spread operator to show how they are organized in the db
       .then((notes) => [...notes, newNote])
       .then((updatedNotes) => this.write(updatedNotes))
       .then(() => newNote);
   }
 
   removeNote(id) {
+    //deleting notes
     return this.getNotes()
       .then((notes) => notes.filter((note) => note.id !== id))
       .then((filteredNotes) => this.write(filteredNotes));
