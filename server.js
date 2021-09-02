@@ -13,6 +13,6 @@ app.use('/api', apiRoutes);
 app.use('/', htmlRoutes);
 
 app.listen(PORT, () => console.log(`Listening on PORT: ${PORT}`));
-ten(PORT, () => {
+listen(PORT, () => {
   console.log('server on')
 });
